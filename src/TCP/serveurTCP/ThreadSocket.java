@@ -1,4 +1,4 @@
-package main.serveurTCP;
+package TCP.serveurTCP;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -25,27 +25,25 @@ public class ThreadSocket extends Thread{
 			InputStreamReader isr=new InputStreamReader(is);
 			BufferedReader reader =new BufferedReader(isr);
 
-
 			//pour envoyer les messages aux clients
 			OutputStream os = (OutputStream) socket.getOutputStream();
-
-
 			PrintWriter writer =new PrintWriter(os);
 
 			//lire le message du client 
 			String requete = reader.readLine().trim();
 			System.out.println("la requete reçu est : "+requete);
 
-			//separer la chaine operation en sous chaines selon les separateurs defini avec ma methode spilt 
-			//et stocker chaque sous chaine dans le tableau parts
+			//separer la chaine 'requete' en sous chaines selon les separateurs defini avec la methode split 
+			//et stocker chaque sous chaine dans le tableau 'parts'
 			String[] parts = requete.split("\\+|\\-|\\*|/");
 
 			//convertir les deux elements du tableau en Float
 			Float nb1 = Float.parseFloat(parts[0]);
 			Float nb2 =  Float.parseFloat(parts[1]);
 
-			Float reponse =0f;
-
+			Float reponse = 0f;
+			
+			//traiter la requête selon l'operation demandée
 			if (requete.contains("+")) {
 				reponse = nb1 + nb2;
 			}else if (requete.contains("-")) {
@@ -59,7 +57,7 @@ public class ThreadSocket extends Thread{
 
 
 
-            //envoyer la reponse au client
+			//envoyer la reponse au client
 			writer.println(reponse);
 			writer.flush();//envoyer effectivement le msg
 

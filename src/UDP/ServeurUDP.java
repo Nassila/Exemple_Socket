@@ -28,8 +28,8 @@ public class ServeurUDP {
 			//modifier le code pour que le serveur envoi un message au client
 			Scanner in = new Scanner(System.in);
 			System.out.println("saissir le message à envoyer au client");
-			String g = in.nextLine();
-			sendData = g.getBytes();
+			String message = in.nextLine();
+			sendData = message.getBytes();
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, clientAddress, port);
 			serverSocket.send(sendPacket);
 			

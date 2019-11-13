@@ -1,9 +1,9 @@
-package main.serveurTCP;
+package TCP.serveurTCP;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import utilsTCP.ConfigSocket;
+import TCP.utilsTCP.ConfigSocket;
 
 public class Serveur {
 
@@ -20,8 +20,8 @@ public class Serveur {
 
 				System.out.println("Un canal creer par un client");
                 
-				//pour gérer les communications du serveur et du client par le serveur
-				ThreadSocket ts=new ThreadSocket(socket);
+				//pour gérer les communications entre le serveur et le client par le serveur
+				ThreadSocket ts = new ThreadSocket(socket);
 				ts.start();
 
 

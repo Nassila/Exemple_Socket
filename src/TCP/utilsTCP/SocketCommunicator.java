@@ -1,4 +1,4 @@
-package utilsTCP;
+package TCP.utilsTCP;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -22,18 +22,17 @@ public final class SocketCommunicator {
 
 			
 			
-			//envoyer la requête au serveur
+			
 			OutputStream  os = (OutputStream) socket.getOutputStream();
 			PrintWriter writer = new PrintWriter(os);
-
+			//envoyer la requête au serveur
 			writer.println(requete);
-			//forcer l'envoi
-			writer.flush();
+			writer.flush();//forcer l'envoi
 			
-			//lire la réponse du serveur
 			InputStream  is = socket.getInputStream();
 			InputStreamReader isr = new InputStreamReader(is);
 			BufferedReader reader = new BufferedReader(isr);
+			//lire la réponse du serveur
 			reponse = reader.readLine();
 
 

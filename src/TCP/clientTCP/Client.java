@@ -1,8 +1,8 @@
-package main.clientTCP;
+package TCP.clientTCP;
 
 import java.util.Scanner;
 
-import utilsTCP.SocketCommunicator;
+import TCP.utilsTCP.SocketCommunicator;
 
 
 
@@ -15,7 +15,7 @@ public class Client {
 		while (true){
 			System.out.print("Introduire une operation : ");
             //pour puvoir saisir dans la console
-			String operation =scanner.next().trim();
+			String operation =scanner.next().trim(); // trim pour supprimer les espaces des deux coté de la chaine
             
 			//si le client saisi quitter, il quittera le scanner et n'aura plus la possibilité de communiquer avec le serveur 
 			if (operation.equals("quitter")) {
@@ -23,11 +23,11 @@ public class Client {
 				break;
 			}
             
-			//separer la chaine operation en sous chaines selon les separateurs defini avec ma methode spilt 
-			//et stocker chaque sous chaine dans le tableau parts
+			//separer la chaine 'operation' en sous chaines selon les separateurs defini avec ma methode split 
+			//et stocker chaque sous chaine dans le tableau 'parts'
 			String[] parts = operation.split("\\+|\\-|\\*|/");
 			
-            //comme on fait des operation mathematique, il faut verifier que le client a bien saisi deux element 
+            //comme on fait des operations mathematiques, il faut verifier que le client a bien saisi deux elements 
 			//pour se faire il faut que la taille du tableau soit egale à 2
 			if (parts.length !=2) {
 				System.err.println("Erreur dans l'operation");
@@ -35,7 +35,7 @@ public class Client {
 				try{
 					//envoyer la requete au serveur
 					Object reponse= SocketCommunicator.envoyerRequete(operation);
-					System.out.println("le resultat est : " + reponse);
+					System.out.println("le resultat est : " + reponse);//affichage du resultat sur la console
 				}
 				catch(Exception e){
 					System.err.println("Erreur dans les operands");
