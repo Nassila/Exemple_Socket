@@ -18,7 +18,7 @@ public class ServeurUDP {
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			serverSocket.receive(receivePacket);
 			
-			//modifier le code pour afficher l'adresse de la source et le port
+			//afficher l'adresse de la source et le port
 			InetAddress clientAddress = receivePacket.getAddress();
 			int port = receivePacket.getPort();
 			System.out.println("l'adresse de reception est : " + clientAddress.getHostName() + "et le port est : " + port);
