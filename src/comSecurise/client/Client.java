@@ -1,7 +1,10 @@
 package comSecurise.client;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -26,19 +29,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import comSecurise.outil;
 
 public class Client extends Thread {
 
 	public JFrame frame;
-
 	private JTextField textField;
-	private JPanel panelCenter;
 	private JScrollPane scrollPane;
-	private static JTextArea textArea;
+	private static JTextPane textPane;
+	private static SimpleAttributeSet attributeSet;
+	private static StyledDocument doc;
 
 	/**
 	 * Launch the application.
@@ -96,12 +102,26 @@ public class Client extends Thread {
 				// dechiffremnt
 				dechiffre = outil.dechiffrement(privateKey, message);
 
+				StyleConstants.setItalic(attributeSet, true);
+				StyleConstants.setForeground(attributeSet, Color.black);
+				StyleConstants.setBackground(attributeSet, Color.pink);
+				StyleConstants.setFontSize(attributeSet, 18);
+
+				StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_LEFT);
+
+				int length = doc.getLength();
+
+				// doc = textArea.getStyledDocument();
+				doc.insertString(doc.getLength(), "\n" + "Alice :   " + dechiffre + "\n", attributeSet);
+
+				doc.setParagraphAttributes(length + 1, 1, attributeSet, false);
+
 				// verifier la singnature
 				// sBoolean singnature = outil.verifierSignature(pubKeyServeur, message ,
 				// dechiffre);
 				// dataOut.writeUTF(singnature);
 
-				textArea.setText(textArea.getText().trim() + "\n" + dechiffre);
+				// textArea.setText(textArea.getText().trim() + "\n" + dechiffre);
 			}
 
 		} catch (Exception e) {
@@ -123,9 +143,14 @@ public class Client extends Thread {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setTitle("Client ");
+		frame.setBounds(100, 100, 500, 400);
+		frame.setTitle("===> Alice ");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// modification de l'icone de la fenetre
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Image img = kit.getImage("logo.jpg");
+		frame.setIconImage(img);
 
 		JPanel panelsouth = new JPanel();
 		frame.getContentPane().add(panelsouth, BorderLayout.SOUTH);
@@ -136,7 +161,7 @@ public class Client extends Thread {
 			public void keyReleased(KeyEvent e) {
 				if (textField.getText().equals("EXIT")) {
 					try {
-						dataOut.writeUTF("ClientServeur : Aurevoir");
+						dataOut.writeUTF("Alice :   Aurevoir");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -146,7 +171,7 @@ public class Client extends Thread {
 			}
 		});
 		panelsouth.add(textField);
-		textField.setColumns(10);
+		textField.setColumns(22);
 
 		JButton btnEnvoyer = new JButton("envoyer");
 		btnEnvoyer.addActionListener(new ActionListener() {
@@ -164,6 +189,17 @@ public class Client extends Thread {
 
 					dataOut.writeUTF(chiffre);
 
+					StyleConstants.setItalic(attributeSet, true);
+					StyleConstants.setForeground(attributeSet, Color.black);
+					StyleConstants.setBackground(attributeSet, Color.green);
+					StyleConstants.setFontSize(attributeSet, 18);
+
+					StyleConstants.setAlignment(attributeSet, StyleConstants.ALIGN_RIGHT);
+
+					int length = doc.getLength();
+					doc.insertString(doc.getLength(), "\n" + "Moi :   " + messageOut + "\n", attributeSet);
+					doc.setParagraphAttributes(length + 1, 1, attributeSet, false);
+
 					textField.setText("");
 
 				} catch (Exception e2) {
@@ -173,16 +209,15 @@ public class Client extends Thread {
 		});
 		panelsouth.add(btnEnvoyer);
 
-		panelCenter = new JPanel();
-		frame.getContentPane().add(panelCenter, BorderLayout.CENTER);
+		textPane = new JTextPane();
+		scrollPane = new JScrollPane(textPane);
+		textPane.setEditable(false);
+		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-		textArea = new JTextArea();
-		textArea.setRows(12);
-		textArea.setColumns(35);
-		textArea.setEditable(false);
+		attributeSet = new SimpleAttributeSet();
+		StyleConstants.setBold(attributeSet, true);
 
-		scrollPane = new JScrollPane(textArea);
-		panelCenter.add(scrollPane);
+		doc = textPane.getStyledDocument();
 
 	}
 
